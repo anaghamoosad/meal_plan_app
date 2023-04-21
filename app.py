@@ -12,7 +12,7 @@ def index():
 
 def generate_meal_plan(ing):
     # Initialize ChatGPT instance
-    openai.api_key = "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"
+    openai.api_key = ""
     model_engine = "gpt-3.5-turbo" 
     ingredients_to_exclude =ing
     
