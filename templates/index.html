@@ -22,7 +22,7 @@
       <span class="navbar-brand mb-0 h1  ">Weekly Meal Planning App</span>
     </div>
   </nav>
-
+   <form class="row g-3"  action = "http://localhost:5000/result" method = "POST">
     <div class="container-sm container-custom" >
  
         <div class="input-group mb-3">
@@ -31,19 +31,23 @@
               <button class="btn btn-outline-secondary" id ="add-button" type="button">Add</button>
             </div>
           </div>
-            
+        
+          
           <div class="form-check form-custom">
             <input class="form-check-input" type="checkbox" value="" id="select-all"  >
             <label class="form-check-label  " for="flexCheckDefault">
             Select All
             </label>
           </div>
-            <ul class="list-group">
- 
+            <ul class="list-group"> 
  
             </ul>
+            <button type="submit" class="btn btn-primary mb-3">Generate Meal Plan</button>
         </div>
+ 
     </div>
+</form>
+    
     </body>
     <script src="../static/script.js" ></script>
     </html>
