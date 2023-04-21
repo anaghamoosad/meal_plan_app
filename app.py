@@ -26,7 +26,7 @@ def generate_meal_plan(ing):
                         "role":
                         "user",
                         "content":
-                        f"Generate a weekly vegetarian Indian meal plan with only 1 choice for breakfast, 1 choice for lunch, 1 choice for dinner and 1 choice for snacks. The total calories of the day is 1800. Exclude eggs and include on cheat meal each week on Saturday lunch. Also print the approximate calorie count for each meal. Exclude the following {ingredients_to_exclude} ingredients when suggesting the meals.Format the output as the following : Day \n mealtype \n meal \n calories",
+                        f"Generate a weekly vegetarian Indian meal plan with only 1 choice for breakfast, 1 choice for lunch, 1 choice for dinner and 1 choice for snacks. The total calories of the day is 1800. Exclude eggs and include on cheat meal each week on Saturday lunch.Also print the approximate calorie count for each meal. Do not suggest meals that conatin the following {ingredients_to_exclude} ingredients .Format the output as the following : Day \n mealtype \n meal \n calories",
                     }],
                     temperature=0,
                     n=1
@@ -87,7 +87,7 @@ def process_meals(text):
 def result():
     if request.method == "POST":
         print("Entered flask Application!!!!")
-        ingredients_to_exclude=["mushrooms","eggplant"]
+        ingredients_to_exclude=["mushroom","oats","eggs","eggplant"]
         print("ing_list",ingredients_to_exclude)
         print("Entered flask Application!!!!")
         result= generate_meal_plan(ingredients_to_exclude) 
