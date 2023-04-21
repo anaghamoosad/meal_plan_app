@@ -4,7 +4,7 @@ import openai
 
 def generate_meal_plan():
     # Initialize ChatGPT instance
-    openai.api_key = "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"
+    openai.api_key = ""
     model_engine = "gpt-3.5-turbo" 
     ingredients_to_exclude =['mushrooms,eggplant, ']
  
