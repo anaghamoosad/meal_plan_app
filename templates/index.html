@@ -22,7 +22,7 @@
       <span class="navbar-brand mb-0 h1  ">Weekly Meal Planning App</span>
     </div>
   </nav>
-   <form class="row g-3"  action = "http://localhost:5000/result" method = "POST">
+   <form class="row g-3"  action = "/result" method = "POST">
     <div class="container-sm container-custom" >
  
         <div class="input-group mb-3">
@@ -45,6 +45,27 @@
             <button type="submit" class="btn btn-primary mb-3">Generate Meal Plan</button>
         </div>
  
+    </div>
+
+    <div class="container-sm container-table" >
+        <table class="table table-striped">
+            <tr>
+            <th>Day</th>
+            <th>Breakfast</th>
+            <th>Lunch</th>
+            <th>Dinner</th>
+            <th>Snacks</th>
+            </tr>
+            {% for day, meals in result.items() %}
+            <tr>
+                <td>{{ day }}</td>
+                <td>{{ meals['Breakfast']['food'] }} ({{ meals['Breakfast']['calories'] }})</td>
+                <td>{{ meals['Lunch']['food'] }} ({{ meals['Lunch']['calories'] }})</td>
+                <td>{{ meals['Dinner']['food'] }} ({{ meals['Dinner']['calories'] }})</td>
+                <td>{{ meals['Snacks']['food'] }} ({{ meals['Snacks']['calories'] }})</td>
+            </tr>
+            {% endfor %}
+        </table>
     </div>
 </form>
     

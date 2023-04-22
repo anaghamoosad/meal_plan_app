@@ -4,10 +4,14 @@ from flask import *
 
 app= Flask(__name__)
 
-@app.route('/')
-def index():  
+@app.route('/',methods = ['POST', 'GET'])
+
+         
+        
+ 
     
-    return render_template("index.html")
+    
+
 
 
 def generate_meal_plan(ing):
@@ -15,6 +19,7 @@ def generate_meal_plan(ing):
     openai.api_key = ""
     model_engine = "gpt-3.5-turbo" 
     ingredients_to_exclude =ing
+    
     
     # Generate a response
     completion = openai.ChatCompletion.create(
@@ -26,7 +31,7 @@ def generate_meal_plan(ing):
                         "role":
                         "user",
                         "content":
-                        f"Generate a weekly vegetarian Indian meal plan with only 1 choice for breakfast, 1 choice for lunch, 1 choice for dinner and 1 choice for snacks. The total calories of the day is 1800. Exclude eggs and include on cheat meal each week on Saturday lunch.Also print the approximate calorie count for each meal. Do not suggest meals that conatin the following {ingredients_to_exclude} ingredients .Format the output as the following : Day \n mealtype \n meal \n calories",
+                        f"Generate a weekly vegetarian South Indian meal plan with only 1 choice for breakfast, 1 choice for lunch, 1 choice for dinner and 1 choice for snacks. The total calories of the day is 1200. Exclude eggs.Also print the approximate calorie count for each meal. Do not suggest meals that conatin the following {ingredients_to_exclude} ingredients .Format the output as the following : Day \n mealtype \n meal \n calories",
                     }],
                     temperature=0,
                     n=1
@@ -80,10 +85,14 @@ def process_meals(text):
 
 
 
+ 
+def index():
+
+        
+    return render_template("index.html") 
 
 
-
-@app.route('/result',methods = ['POST', 'GET'])
+@app.route('/',methods = ['POST', 'GET'])
 def result():
     if request.method == "POST":
         print("Entered flask Application!!!!")
