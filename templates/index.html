@@ -22,9 +22,8 @@
       <span class="navbar-brand mb-0 h1  ">Weekly Meal Planning App</span>
     </div>
   </nav>
-   <form class="row g-3"  action = "/result" method = "POST">
-    <div class="container-sm container-custom" >
- 
+  <div class="container-custom-left" >
+   <form class="row g-3"  action = {{ url_for('index') }} method = "POST">
         <div class="input-group mb-3">
             <input id ="ing-input" type="text" class="form-control" placeholder="Enter Ingredients to exlude" aria-label="Ingredients" aria-describedby="basic-addon2">
             <div class="input-group-append">
@@ -45,29 +44,37 @@
             <button type="submit" class="btn btn-primary mb-3">Generate Meal Plan</button>
         </div>
  
+      </form>
     </div>
 
-    <div class="container-sm container-table" >
-        <table class="table table-striped">
-            <tr>
-            <th>Day</th>
-            <th>Breakfast</th>
-            <th>Lunch</th>
-            <th>Dinner</th>
-            <th>Snacks</th>
-            </tr>
-            {% for day, meals in result.items() %}
-            <tr>
-                <td>{{ day }}</td>
-                <td>{{ meals['Breakfast']['food'] }} ({{ meals['Breakfast']['calories'] }})</td>
-                <td>{{ meals['Lunch']['food'] }} ({{ meals['Lunch']['calories'] }})</td>
-                <td>{{ meals['Dinner']['food'] }} ({{ meals['Dinner']['calories'] }})</td>
-                <td>{{ meals['Snacks']['food'] }} ({{ meals['Snacks']['calories'] }})</td>
-            </tr>
-            {% endfor %}
-        </table>
+    <div class="container-custom-right" >
+    <div class="container-table" >
+      {% if result %}
+
+            <table class="table table-striped">
+                <tr>
+                <th>Day</th>
+                <th>Breakfast</th>
+                <th>Lunch</th>
+                <th>Dinner</th>
+                <th>Snacks</th>
+                </tr>
+                {% for day, meals in result.items() %}
+                <tr>
+                    <td>{{ day }}</td>
+                    <td>{{ meals['Breakfast']['food'] }} ({{ meals['Breakfast']['calories'] }})</td>
+                    <td>{{ meals['Lunch']['food'] }} ({{ meals['Lunch']['calories'] }})</td>
+                    <td>{{ meals['Dinner']['food'] }} ({{ meals['Dinner']['calories'] }})</td>
+                    <td>{{ meals['Snacks']['food'] }} ({{ meals['Snacks']['calories'] }})</td>
+                </tr>
+                {% endfor %}
+            </table>
+     
+        {% endif %}
     </div>
-</form>
+  </div>
+ 
+
     
     </body>
     <script src="../static/script.js" ></script>

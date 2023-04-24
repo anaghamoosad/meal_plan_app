@@ -5,27 +5,25 @@
          
     }
     
-.container-custom{
-
-      max-width: 25%;
-      margin-top: 5%;
-      margin-left: 5%;
-  
+.container-custom-left{
+max-width: 20%;
+  margin-top: 5%;
+  margin-left: 5%;
+  float: left;
 }
+.container-custom-right{
 
+  max-width: 60%;
+  margin-top: 5%;
+  margin-left: 5%;
+  float: left;
+ }
+ 
 .form-custom{
-
-  
   margin-left:6%;
   font-size: small;
 
 }
 
 
-.container-table{
 
-  max-width: 50%;
-  margin-top: 5%;
-  margin-left: 5%;
-
-}

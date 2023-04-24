@@ -1,22 +1,27 @@
 import os
 import openai
 from flask import *
-
+from flask import Flask, render_template, url_for, request
 app= Flask(__name__)
 
-@app.route('/',methods = ['POST', 'GET'])
-
-         
+@app.route('/',methods = ['POST', 'GET']) 
+def index():
+    if request.method == "POST":
+        print("Entered flask Application!!!!")
+        ingredients_to_exclude=["mushroom","oats","eggs","eggplant"]
+        print("ing_list",ingredients_to_exclude)
+        print("Entered flask Application!!!!")
+        result= generate_meal_plan(ingredients_to_exclude)
+        return render_template('index.html',result = result) 
         
+    return render_template('index.html')
+    
+
+    
  
-    
-    
-
-
-
 def generate_meal_plan(ing):
     # Initialize ChatGPT instance
-    openai.api_key = ""
+    openai.api_key = "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"
     model_engine = "gpt-3.5-turbo" 
     ingredients_to_exclude =ing
     
@@ -81,29 +86,11 @@ def process_meals(text):
 
 
     return diet_chart
-            
-
-
 
  
-def index():
-
-        
-    return render_template("index.html") 
-
-
-@app.route('/',methods = ['POST', 'GET'])
-def result():
-    if request.method == "POST":
-        print("Entered flask Application!!!!")
-        ingredients_to_exclude=["mushroom","oats","eggs","eggplant"]
-        print("ing_list",ingredients_to_exclude)
-        print("Entered flask Application!!!!")
-        result= generate_meal_plan(ingredients_to_exclude) 
-        return render_template("result.html",result = result)
 
 if __name__ == '__main__':
    app.run(debug = True)
    
-   
+ 
    
