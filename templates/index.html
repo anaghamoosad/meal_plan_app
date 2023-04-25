@@ -1,70 +1,56 @@
 <html>
     <head>
         <meta charset="utf-8">  
-        <title>Meal Plan App powered by ChatGPT</title> 
+        <title>Vegetarian Meal Plan App powered by ChatGPT</title> 
   
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
- 
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+        
         <link href="../static/style.css" rel="stylesheet">
-       
-        <!-- Latest compiled JavaScript -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">   
+ 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" ></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"> </script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-<script src="https://cdn.rawgit.com/simonbengtsson/jsPDF/requirejs-fix-dist/dist/jspdf.debug.js"></script>
-<script src="https://unpkg.com/jspdf-autotable@2.3.2"></script>
- 
- 
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+        <script src="https://cdn.rawgit.com/simonbengtsson/jsPDF/requirejs-fix-dist/dist/jspdf.debug.js"></script>
+        <script src="https://unpkg.com/jspdf-autotable@2.3.2"></script> 
+
     </head>
 
-    <body  >
+    <body>
         <!-- As a heading -->
-<nav class="navbar  navbar-custom  ">
-    <div class="container-fluid">
-      <span class="navbar-brand mb-0 h1  ">Weekly Meal Planning App</span>
-    </div>
-  </nav>
-  <div class="container-custom-left" >
-   <form class="row g-3"  action = {{ url_for('index') }} method = "POST">
- 
+      <nav class="navbar  navbar-custom  ">
+        <div class="container-fluid ">
+          <span class="navbar-brand mb-0 h1 ">Weekly Vegetarian Meal Planning App</span>
+         </div>
+      </nav>
+      <div class="container-custom-left" >
+        <form class="row g-3"  action = {{ url_for('index') }} method = "POST"> 
           <div class="input-group mb-3">
             <input name ="cusine-input" type="text" class="form-control" placeholder="Enter the cusine" aria-label="Cusine" aria-describedby="basic-addon2">
           </div>
-            <div class="input-group mb-3">
+          <div class="input-group mb-3">
             <input name ="cal-input" type="number" class="form-control" placeholder="Enter the total calories for each day" aria-label="Cusine" aria-describedby="basic-addon2">
-          </div>
-  
-            <button type="submit" class="btn btn-primary mb-3" id="generateplan"  >Generate Meal Plan</button>
- 
-            <input  class="btn btn-outline-secondary" type="button" value="Convert HTML to PDF"              
-            onclick="generate()">
-          </div>
- 
-      </form>
-    </div>
+          </div>  
+          <button type="submit" class="btn btn-success mb-3" id="generateplan"  >Generate Meal Plan</button>
+          <button  class="btn btn-secondary pdf-button" type="button" id="downloadpdf" onclick="generate()"> Download Meal Plan as PDF</button>      
+        </form>
+      </div>
 
-    <div class="container-custom-right" >
-      
-    <div id="loader"></div>
- 
+      <h5>The  meal plan will be generated here</h5>    
 
-    <div class="container-table"    >
-      {% if result %}
+        <div id="loader"></div> 
 
-      <script>
-      function displayResult(){
-
-        document.getElementById("loader").style.display="none";
-        document.getElementById("meal-table").style.display="block";
-      }
-
-
-
-      </script>
+      <div class="container-custom-right" >    
+        <div class="container-table"    >
+          {% if result %}
+            <script>
+              function displayResult(){
+                document.getElementById("loader").style.display="none";
+             }
+            </script>
 
             <table class="table" id="meal-table">
                 <tr>
@@ -83,94 +69,11 @@
                     <td>{{ meals['Snacks']['food'] }} ({{ meals['Snacks']['calories'] }})</td>
                 </tr>
                 {% endfor %}
-            </table>
-     
-        {% endif %}
-    </div>
-  </div>
- 
-
-    
+            </table>     
+          {% endif %}
+        </div>
+      </div>    
     </body>
-    <script src="../static/script.js" ></script>
-    <script>
 
-      function generate() {
-
-        var doc = new jsPDF('l', 'pt');
-      
-        var res = doc.autoTableHtmlToJson(document.getElementById("meal-table"));
-   
-      
-        var header = function(data) {
-          doc.setFontSize(25);
-          doc.setTextColor(40);
-          doc.setFontStyle('normal');
-          doc.text("Weekly Meal Plan", data.settings.margin.left, 50);
-        };
-        var options = {
-          beforePageContent: header,
-          margin: {
-            top: 100
-          },
-     
-          theme: 'grid',
-          columnStyles: {
-              0: {
-                  
-                 cellWidth: '80',
-                  overflow: 'linebreak'
-                                  
-                  },
-              1: {
-                
-                cellWidth: '20',
-                overflow: 'linebreak'
-                 
-                 },
-              2: {
-                 
-                  cellWidth: '80',
-                  overflow: 'linebreak'
-                 
-                 },
-              3: {
-                   
-                  cellWidth: '80' ,
-                  overflow: 'linebreak'
-                 },
-              4   : {
-                   
-                  cellWidth: '80',                 
-                  overflow: 'linebreak'
-                 },
-          },
-          rowStyles: {
-         
-            0: {
-              cellWidth: '80',
-              rowHeight: '80'
-              },
-          1: {
-            rowHeight: '80'
-             },
-          2: {
-            rowHeight: '80'
-             },
-          3: {
-            rowHeight: '80'
-             },
-          4   : {
-            rowHeight: '80'
-             }
-          },
-         
-        };
-      
-        doc.autoTable(res.columns, res.data, options);
-       
-      
-        doc.save("weeklymealplan.pdf");
-      }
-    </script>
-    </html>
+    <script src="../static/script.js" ></script>  
+</html>
