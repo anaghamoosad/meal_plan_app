@@ -1,74 +1,79 @@
 <html>
     <head>
         <meta charset="utf-8">  
-        <title>Meal Plan App powered by ChatGPT</title> 
+        <title>Vegetarian Meal Plan App powered by ChatGPT</title> 
   
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
- 
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+        
         <link href="../static/style.css" rel="stylesheet">
-       
-        <!-- Latest compiled JavaScript -->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" ></script>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">   
  
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" ></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"> </script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+        <script src="https://cdn.rawgit.com/simonbengtsson/jsPDF/requirejs-fix-dist/dist/jspdf.debug.js"></script>
+        <script src="https://unpkg.com/jspdf-autotable@2.3.2"></script> 
+
     </head>
 
     <body>
         <!-- As a heading -->
-<nav class="navbar  navbar-custom  ">
-    <div class="container-fluid">
-      <span class="navbar-brand mb-0 h1  ">Weekly Meal Planning App</span>
-    </div>
-  </nav>
-   <form class="row g-3"  action = "/result" method = "POST">
-    <div class="container-sm container-custom" >
- 
-        <div class="input-group mb-3">
-            <input id ="ing-input" type="text" class="form-control" placeholder="Enter Ingredients to exlude" aria-label="Ingredients" aria-describedby="basic-addon2">
-            <div class="input-group-append">
-              <button class="btn btn-outline-secondary" id ="add-button" type="button">Add</button>
-            </div>
+      <nav class="navbar  navbar-custom  ">
+        <div class="container-fluid ">
+          <span class="navbar-brand mb-0 h1 ">Weekly Vegetarian Meal Planning App</span>
+         </div>
+      </nav>
+      <div class="container-custom-left" >
+        <form class="row g-3"  action = {{ url_for('index') }} method = "POST"> 
+          <div class="input-group mb-3">
+            <input name ="cusine-input" type="text" class="form-control" placeholder="Enter the cusine" aria-label="Cusine" aria-describedby="basic-addon2">
           </div>
-        
-          
-          <div class="form-check form-custom">
-            <input class="form-check-input" type="checkbox" value="" id="select-all"  >
-            <label class="form-check-label  " for="flexCheckDefault">
-            Select All
-            </label>
-          </div>
-            <ul class="list-group"> 
- 
-            </ul>
-            <button type="submit" class="btn btn-primary mb-3">Generate Meal Plan</button>
-        </div>
- 
-    </div>
+          <div class="input-group mb-3">
+            <input name ="cal-input" type="number" class="form-control" placeholder="Enter the total calories for each day" aria-label="Cusine" aria-describedby="basic-addon2">
+          </div>  
+          <button type="submit" class="btn btn-success mb-3" id="generateplan"  >Generate Meal Plan</button>
+          <button  class="btn btn-secondary pdf-button" type="button" id="downloadpdf" onclick="generate()"> Download Meal Plan as PDF</button>      
+        </form>
+      </div>
 
-    <div class="container-sm container-table" >
-        <table class="table table-striped">
-            <tr>
-            <th>Day</th>
-            <th>Breakfast</th>
-            <th>Lunch</th>
-            <th>Dinner</th>
-            <th>Snacks</th>
-            </tr>
-            {% for day, meals in result.items() %}
-            <tr>
-                <td>{{ day }}</td>
-                <td>{{ meals['Breakfast']['food'] }} ({{ meals['Breakfast']['calories'] }})</td>
-                <td>{{ meals['Lunch']['food'] }} ({{ meals['Lunch']['calories'] }})</td>
-                <td>{{ meals['Dinner']['food'] }} ({{ meals['Dinner']['calories'] }})</td>
-                <td>{{ meals['Snacks']['food'] }} ({{ meals['Snacks']['calories'] }})</td>
-            </tr>
-            {% endfor %}
-        </table>
-    </div>
-</form>
-    
+      <h5>The  meal plan will be generated here</h5>    
+
+        <div id="loader"></div> 
+
+      <div class="container-custom-right" >    
+        <div class="container-table"    >
+          {% if result %}
+            <script>
+              function displayResult(){
+                document.getElementById("loader").style.display="none";
+             }
+            </script>
+
+            <table class="table" id="meal-table">
+                <tr>
+                <th>Day</th>
+                <th>Breakfast</th>
+                <th>Lunch</th>
+                <th>Dinner</th>
+                <th>Snacks</th>
+                </tr>
+                {% for day, meals in result.items() %}
+                <tr>
+                    <td>{{ day }}</td>
+                    <td>{{ meals['Breakfast']['food'] }} ({{ meals['Breakfast']['calories'] }})</td>
+                    <td>{{ meals['Lunch']['food'] }} ({{ meals['Lunch']['calories'] }})</td>
+                    <td>{{ meals['Dinner']['food'] }} ({{ meals['Dinner']['calories'] }})</td>
+                    <td>{{ meals['Snacks']['food'] }} ({{ meals['Snacks']['calories'] }})</td>
+                </tr>
+                {% endfor %}
+            </table>     
+          {% endif %}
+        </div>
+      </div>    
     </body>
-    <script src="../static/script.js" ></script>
-    </html>
+
+    <script src="../static/script.js" ></script>  
+</html>
