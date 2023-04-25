@@ -8,24 +8,19 @@ app= Flask(__name__)
 def index():
     if request.method == "POST":
         print("Entered flask Application!!!!")
-        ingredients_to_exclude=["mushroom","oats","eggs","eggplant"]
-        print("ing_list",ingredients_to_exclude)
+        cusine =request.form['cusine-input']
+        cal =request.form['cal-input']      
         print("Entered flask Application!!!!")
-        result= generate_meal_plan(ingredients_to_exclude)
+        result= generate_meal_plan(cusine,cal)
         return render_template('index.html',result = result) 
         
-    return render_template('index.html')
-    
+    return render_template('index.html')    
 
-    
- 
-def generate_meal_plan(ing):
+def generate_meal_plan(cusine,cal):
     # Initialize ChatGPT instance
-    openai.api_key = "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"
+    openai.api_key = ""
     model_engine = "gpt-3.5-turbo" 
-    ingredients_to_exclude =ing
-    
-    
+      
     # Generate a response
     completion = openai.ChatCompletion.create(
                     model="gpt-3.5-turbo",
@@ -36,7 +31,7 @@ def generate_meal_plan(ing):
                         "role":
                         "user",
                         "content":
-                        f"Generate a weekly vegetarian South Indian meal plan with only 1 choice for breakfast, 1 choice for lunch, 1 choice for dinner and 1 choice for snacks. The total calories of the day is 1200. Exclude eggs.Also print the approximate calorie count for each meal. Do not suggest meals that conatin the following {ingredients_to_exclude} ingredients .Format the output as the following : Day \n mealtype \n meal \n calories",
+                        f"Generate a weekly Vegetarian {cusine} meal plan with only 1 choice for breakfast, 1 choice for lunch, 1 choice for dinner and 1 choice for snacks. The total calories of the day is  {cal}. Exclude eggs.Also print the approximate calorie count for each meal. Format the output as the following : Day \n mealtype \n meal \n calories No other text is required. The mealtype should be in the following format and spelling : Breakfast, Lunch, Dinner ,Snacks.",
                     }],
                     temperature=0,
                     n=1
@@ -46,11 +41,11 @@ def generate_meal_plan(ing):
     response = (completion["choices"][0].get("message").get(
                 "content").encode("utf8").decode())
     text = [s for s in response.splitlines() if s]
+    print(text)
     final_diet_chart =process_meals(text)
+    print(final_diet_chart)
     return final_diet_chart
-
-   
-
+ 
 
 def process_meals(text):
    
@@ -82,13 +77,10 @@ def process_meals(text):
             total_meals=[]
             meal_type={} 
             food ={}            
-          
-
 
     return diet_chart
 
  
-
 if __name__ == '__main__':
    app.run(debug = True)
    
