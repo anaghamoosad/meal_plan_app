@@ -21,7 +21,7 @@
  
     </head>
 
-    <body>
+    <body  >
         <!-- As a heading -->
 <nav class="navbar  navbar-custom  ">
     <div class="container-fluid">
@@ -38,7 +38,7 @@
             <input name ="cal-input" type="number" class="form-control" placeholder="Enter the total calories for each day" aria-label="Cusine" aria-describedby="basic-addon2">
           </div>
   
-            <button type="submit" class="btn btn-primary mb-3" id="generateplan" >Generate Meal Plan</button>
+            <button type="submit" class="btn btn-primary mb-3" id="generateplan"  >Generate Meal Plan</button>
  
             <input  class="btn btn-outline-secondary" type="button" value="Convert HTML to PDF"              
             onclick="generate()">
@@ -48,8 +48,23 @@
     </div>
 
     <div class="container-custom-right" >
-    <div class="container-table"  >
+      
+    <div id="loader"></div>
+ 
+
+    <div class="container-table"    >
       {% if result %}
+
+      <script>
+      function displayResult(){
+
+        document.getElementById("loader").style.display="none";
+        document.getElementById("meal-table").style.display="block";
+      }
+
+
+
+      </script>
 
             <table class="table" id="meal-table">
                 <tr>
