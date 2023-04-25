@@ -12,6 +12,12 @@
        
         <!-- Latest compiled JavaScript -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" ></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"> </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdn.rawgit.com/simonbengtsson/jsPDF/requirejs-fix-dist/dist/jspdf.debug.js"></script>
+<script src="https://unpkg.com/jspdf-autotable@2.3.2"></script>
+ 
  
     </head>
 
@@ -24,34 +30,28 @@
   </nav>
   <div class="container-custom-left" >
    <form class="row g-3"  action = {{ url_for('index') }} method = "POST">
-        <div class="input-group mb-3">
-            <input id ="ing-input" type="text" class="form-control" placeholder="Enter Ingredients to exlude" aria-label="Ingredients" aria-describedby="basic-addon2">
-            <div class="input-group-append">
-              <button class="btn btn-outline-secondary" id ="add-button" type="button">Add</button>
-            </div>
-          </div>
-        
-          
-          <div class="form-check form-custom">
-            <input class="form-check-input" type="checkbox" value="" id="select-all"  >
-            <label class="form-check-label  " for="flexCheckDefault">
-            Select All
-            </label>
-          </div>
-            <ul class="list-group"> 
  
-            </ul>
-            <button type="submit" class="btn btn-primary mb-3">Generate Meal Plan</button>
-        </div>
+          <div class="input-group mb-3">
+            <input name ="cusine-input" type="text" class="form-control" placeholder="Enter the cusine" aria-label="Cusine" aria-describedby="basic-addon2">
+          </div>
+            <div class="input-group mb-3">
+            <input name ="cal-input" type="number" class="form-control" placeholder="Enter the total calories for each day" aria-label="Cusine" aria-describedby="basic-addon2">
+          </div>
+  
+            <button type="submit" class="btn btn-primary mb-3" id="generateplan" >Generate Meal Plan</button>
+ 
+            <input  class="btn btn-outline-secondary" type="button" value="Convert HTML to PDF"              
+            onclick="generate()">
+          </div>
  
       </form>
     </div>
 
     <div class="container-custom-right" >
-    <div class="container-table" >
+    <div class="container-table"  >
       {% if result %}
 
-            <table class="table table-striped">
+            <table class="table" id="meal-table">
                 <tr>
                 <th>Day</th>
                 <th>Breakfast</th>
@@ -78,4 +78,84 @@
     
     </body>
     <script src="../static/script.js" ></script>
+    <script>
+
+      function generate() {
+
+        var doc = new jsPDF('l', 'pt');
+      
+        var res = doc.autoTableHtmlToJson(document.getElementById("meal-table"));
+   
+      
+        var header = function(data) {
+          doc.setFontSize(25);
+          doc.setTextColor(40);
+          doc.setFontStyle('normal');
+          doc.text("Weekly Meal Plan", data.settings.margin.left, 50);
+        };
+        var options = {
+          beforePageContent: header,
+          margin: {
+            top: 100
+          },
+     
+          theme: 'grid',
+          columnStyles: {
+              0: {
+                  
+                 cellWidth: '80',
+                  overflow: 'linebreak'
+                                  
+                  },
+              1: {
+                
+                cellWidth: '20',
+                overflow: 'linebreak'
+                 
+                 },
+              2: {
+                 
+                  cellWidth: '80',
+                  overflow: 'linebreak'
+                 
+                 },
+              3: {
+                   
+                  cellWidth: '80' ,
+                  overflow: 'linebreak'
+                 },
+              4   : {
+                   
+                  cellWidth: '80',                 
+                  overflow: 'linebreak'
+                 },
+          },
+          rowStyles: {
+         
+            0: {
+              cellWidth: '80',
+              rowHeight: '80'
+              },
+          1: {
+            rowHeight: '80'
+             },
+          2: {
+            rowHeight: '80'
+             },
+          3: {
+            rowHeight: '80'
+             },
+          4   : {
+            rowHeight: '80'
+             }
+          },
+         
+        };
+      
+        doc.autoTable(res.columns, res.data, options);
+       
+      
+        doc.save("weeklymealplan.pdf");
+      }
+    </script>
     </html>

@@ -63,16 +63,5 @@ document.getElementById('select-all').onclick = function() {
   }
 }
 
-function validate_form ( )
-{
-    valid = true;
-    var input = document.getElementById("ing-input");
-    if ( input.value == "" )
-    {
-       
-        valid = false;
-    }
 
-    return valid;
-  }
- 
+   
