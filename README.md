@@ -10,7 +10,6 @@ The following ChatGPT prompt is used to generate the weekly menu
 
 **`Generate a weekly Vegetarian {cuisine} meal plan with only 1 choice for breakfast, 1 choice for lunch, 1 choice for dinner and 1 choice for snacks. The total calories of the day is {cal}. Exclude eggs.Also print the approximate calorie count for each meal. Format the output as the following : Day \n mealtype \n meal \n calories No other text is required. The mealtype should be in the following format and spelling : Breakfast, Lunch, Dinner ,Snacks.`**
 
-`
  ---
 
 ![alt text](https://github.com/anaghamoosad/meal_plan_app/blob/main/meal_plan.gif "meal planner app")
